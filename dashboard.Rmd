@@ -53,7 +53,7 @@ ggplotly(box_plot)
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### Maxium temperature vs minium temperature
 
 ```{r}
 hex_plot =
@@ -62,16 +62,14 @@ hex_plot =
     geom_hex(alpha = 0.8) +
     geom_smooth(se = FALSE) +
     labs(
-        title = "Maxium temperature vs minium temperature",
         y = "Maxium temperature -- degree C",
         x = "Minium temperature -- degree C"
-    ) +
-    theme(legend.position = "right")
+    ) 
 
 ggplotly(hex_plot)
 ```
 
-### Chart C
+### The distribution of max temperature in January and July
 
 ```{r}
 hist_plot =
