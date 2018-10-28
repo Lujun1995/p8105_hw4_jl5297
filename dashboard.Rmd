@@ -1,0 +1,88 @@
+---
+title: "Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(p8105.datasets)
+library(tidyverse)
+library(plotly)
+options(scipen = 999)
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
+
+```{r}
+data(ny_noaa)
+set.seed(1)
+ny_noaa_select = ny_noaa %>% sample_n(5000)
+ny_noaa_tidy =
+    ny_noaa_select %>% 
+    mutate(date = as.character(date)) %>% 
+    separate(date, c("year", "month", "day"), sep = "-") %>% 
+    mutate(month = month.name[as.integer(month)]) %>% 
+    mutate(tmax = as.numeric(tmax) / 10, 
+           tmin = as.numeric(tmin) / 10,
+           prcp = prcp / 10) 
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### The distribution of max temperature in January and July
+
+```{r}
+box_plot =
+    ny_noaa_tidy %>% 
+    filter(snow > 0 & snow < 100) %>%
+    ggplot(aes(x = year, y = snow, fill = year)) +
+    geom_boxplot() +
+    labs( 
+        title = "Snowfall value distributions across years",
+        y = "Snowfall value -- mm",
+        x = "Year"
+    ) +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1))
+
+ggplotly(box_plot)
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+hex_plot =
+    ny_noaa_tidy %>% 
+    ggplot(aes(x = tmin, y = tmax)) +
+    geom_hex(alpha = 0.8) +
+    geom_smooth(se = FALSE) +
+    labs(
+        title = "Maxium temperature vs minium temperature",
+        y = "Maxium temperature -- degree C",
+        x = "Minium temperature -- degree C"
+    ) +
+    theme(legend.position = "right")
+
+ggplotly(hex_plot)
+```
+
+### Chart C
+
+```{r}
+hist_plot =
+    ny_noaa_tidy %>% 
+    filter(month %in% c("January", "July")) %>%
+    ggplot(aes(x = tmax, fill = month)) +
+    geom_histogram(bins = 40, alpha = 1) +
+    labs(
+        x = "Count",
+        y = "Maxium Temperature -- degree C"
+    ) 
+    
+ggplotly(hist_plot)
+```
