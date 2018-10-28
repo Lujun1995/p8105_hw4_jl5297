@@ -1,5 +1,5 @@
 ---
-title: "Dashboard"
+title: "NY_NOAA"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -41,7 +41,6 @@ box_plot =
     ggplot(aes(x = year, y = snow, fill = year)) +
     geom_boxplot() +
     labs( 
-        title = "Snowfall value distributions across years",
         y = "Snowfall value -- mm",
         x = "Year"
     ) +
