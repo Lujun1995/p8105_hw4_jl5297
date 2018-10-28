@@ -37,7 +37,9 @@ Column {data-width=650}
 ```{r}
 box_plot =
     ny_noaa_tidy %>% 
-    filter(snow > 0 & snow < 100) %>%
+    filter(snow > 0 & snow < 100, 
+           year %in% 2000:2008) %>%
+    
     ggplot(aes(x = year, y = snow, fill = year)) +
     geom_boxplot() +
     labs( 
@@ -52,11 +54,12 @@ ggplotly(box_plot)
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Maxium temperature vs minium temperature
+### Maxium temperature vs minium temperature in 2000
 
 ```{r}
 hex_plot =
     ny_noaa_tidy %>% 
+    filter(year == 2000) %>% 
     ggplot(aes(x = tmin, y = tmax)) +
     geom_hex(alpha = 0.8) +
     geom_smooth(se = FALSE) +
